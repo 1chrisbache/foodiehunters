@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ember & Salt — Reputation Analysis | FoodieHunters</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ivory:#faf8f4;--white:#fff;--ink:#1a1814;--ink-mid:#3d3a34;
+  --ink-soft:#7a7570;--ink-faint:#b8b4ae;--rule:#e8e4de;
+  --sage:#4a6741;--sage-lt:#eef2ed;--gold:#c8a45a;--gold-lt:#faf4e8;
+  --red:#c0604a;--red-lt:#fdf2ef;
+  --font-serif:'Cormorant Garamond',Georgia,serif;
+  --font-sans:'Jost',sans-serif;
+}
+body{background:var(--ivory);color:var(--ink);font-family:var(--font-sans);font-weight:300;font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased}
+.page{max-width:900px;margin:0 auto;padding:3rem 2.5rem;background:var(--white)}
+@media(max-width:680px){.page{padding:2rem 1.25rem}}
+
+/* HEADER */
+.rpt-header{border-bottom:3px solid var(--ink);padding-bottom:1.5rem;margin-bottom:2rem}
+.brand-row{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1rem;flex-wrap:wrap;gap:0.75rem}
+.brand-logo{font-family:var(--font-serif);font-size:1.1rem;font-weight:600;color:var(--ink-soft);letter-spacing:0.02em}
+.brand-logo em{font-style:italic;color:var(--sage)}
+.prepared-by{font-size:0.68rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-faint)}
+.rpt-title{font-family:var(--font-serif);font-size:2.4rem;font-weight:500;line-height:1.08;margin-bottom:0.3rem;color:var(--ink)}
+.rpt-title em{font-style:italic;color:var(--sage)}
+.rpt-meta{font-size:0.76rem;color:var(--ink-soft);margin-top:0.5rem}
+.rpt-meta span{margin-right:1.5rem}
+
+/* EXEC SUMMARY */
+.section{margin-bottom:2.5rem}
+.section-label{font-size:0.63rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--sage);display:flex;align-items:center;gap:0.5rem;margin-bottom:0.8rem}
+.section-label::before{content:'';display:block;width:16px;height:1px;background:var(--sage)}
+h2{font-family:var(--font-serif);font-size:1.55rem;font-weight:500;color:var(--ink);margin-bottom:0.7rem;line-height:1.2}
+p{font-size:0.88rem;font-weight:300;color:var(--ink-mid);line-height:1.75;margin-bottom:0.8rem}
+
+/* RATINGS TABLE */
+.ratings-table{width:100%;border-collapse:collapse;margin-bottom:2rem;font-size:0.82rem}
+.ratings-table th{background:var(--ink);color:var(--ivory);font-weight:500;font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.65rem 0.9rem;text-align:left}
+.ratings-table td{padding:0.6rem 0.9rem;border-bottom:1px solid var(--rule);vertical-align:top}
+.ratings-table tr:last-child td{border-bottom:none}
+.ratings-table tr:nth-child(even) td{background:var(--ivory)}
+.platform-name{font-weight:500;color:var(--ink)}
+.pill{display:inline-block;font-size:0.62rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;padding:0.18rem 0.55rem;border-radius:2px}
+.pill-red{background:var(--red-lt);color:var(--red)}
+.pill-yellow{background:var(--gold-lt);color:#9a6f1a}
+.pill-green{background:var(--sage-lt);color:var(--sage)}
+
+/* FINDINGS */
+.findings{display:flex;flex-direction:column;gap:0}
+.finding{padding:1.1rem 0;border-bottom:1px solid var(--rule);display:grid;grid-template-columns:22px 1fr;gap:1rem;align-items:start}
+.finding:last-child{border-bottom:none}
+.fdot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:4px}
+.fdot-red{background:var(--red)}
+.fdot-yellow{background:var(--gold)}
+.fdot-green{background:var(--sage)}
+.finding-body h4{font-size:0.88rem;font-weight:600;color:var(--ink);margin-bottom:0.25rem;line-height:1.35}
+.finding-body .fcat{font-size:0.63rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.3rem}
+.fcat-red{color:var(--red)}
+.fcat-yellow{color:#9a6f1a}
+.fcat-green{color:var(--sage)}
+.finding-body p{font-size:0.82rem;color:var(--ink-soft);margin-bottom:0.4rem}
+.finding-body .action{font-size:0.79rem;font-weight:400;color:var(--ink-mid);background:var(--ivory);padding:0.55rem 0.75rem;border-left:2px solid var(--sage);border-radius:0 3px 3px 0;margin-top:0.4rem}
+.finding-body .action strong{font-weight:600;color:var(--ink)}
+
+/* TOP 10 */
+.action-grid{display:flex;flex-direction:column;gap:0}
+.action-item{display:grid;grid-template-columns:38px 1fr 90px;gap:1rem;align-items:center;padding:0.9rem 0;border-bottom:1px solid var(--rule)}
+.action-item:last-child{border-bottom:none}
+.action-num{font-family:var(--font-serif);font-size:1.7rem;font-weight:500;color:var(--ink-faint);line-height:1;font-style:italic;text-align:center}
+.action-text{font-size:0.84rem;font-weight:400;color:var(--ink-mid);line-height:1.55}
+.action-text strong{font-weight:600;color:var(--ink);display:block;margin-bottom:0.15rem;font-size:0.86rem}
+.action-timing{font-size:0.63rem;font-weight:600;letter-spacing:0.09em;text-transform:uppercase;padding:0.25rem 0.6rem;border-radius:2px;text-align:center;white-space:nowrap}
+.timing-now{background:var(--red-lt);color:var(--red)}
+.timing-w1{background:var(--gold-lt);color:#9a6f1a}
+.timing-m1{background:var(--sage-lt);color:var(--sage)}
+.timing-m2{background:#f0eef8;color:#5a4fa0}
+
+/* CLOSING */
+.closing-box{background:var(--ink);border-radius:6px;padding:2rem 2.25rem;margin-top:1rem}
+.closing-box p{color:rgba(250,248,244,0.65);margin-bottom:0}
+.closing-box p:first-child{font-family:var(--font-serif);font-size:1.2rem;font-weight:500;color:var(--ivory);line-height:1.4;margin-bottom:0.9rem}
+
+/* FOOTER */
+.rpt-footer{margin-top:2.5rem;padding-top:1.25rem;border-top:1px solid var(--rule);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.75rem}
+.rpt-footer-left{font-size:0.7rem;color:var(--ink-faint)}
+.rpt-footer-right{font-family:var(--font-serif);font-size:0.95rem;font-weight:600;color:var(--ink-soft)}
+.rpt-footer-right em{font-style:italic;color:var(--sage)}
+
+/* SECTION DIVIDER */
+.sdiv{height:1px;background:linear-gradient(to right,var(--rule),transparent);margin:2.5rem 0}
+
+/* Priority Tier Headers */
+.tier-header{display:flex;align-items:center;gap:0.75rem;padding:0.6rem 0.9rem;border-radius:4px;margin-bottom:0;margin-top:1.5rem}
+.tier-header-red{background:var(--red-lt);border-left:3px solid var(--red)}
+.tier-header-yellow{background:var(--gold-lt);border-left:3px solid var(--gold)}
+.tier-header-green{background:var(--sage-lt);border-left:3px solid var(--sage)}
+.tier-header h3{font-family:var(--font-sans);font-size:0.72rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase}
+.tier-header-red h3{color:var(--red)}
+.tier-header-yellow h3{color:#9a6f1a}
+.tier-header-green h3{color:var(--sage)}
+.tier-header p{font-size:0.72rem;color:var(--ink-soft);margin:0}
+
+@media print{body{background:white}.page{max-width:100%;padding:0}}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="rpt-header">
+    <div class="brand-row">
+      <div class="brand-logo">Foodie<em>Hunters</em></div>
+      <div class="prepared-by">Prepared: April 2026 &nbsp;·&nbsp; Confidential</div>
+    </div>
+    <div class="rpt-title">Ember &amp; Salt <em>Italian Kitchen</em></div>
+    <div style="font-family:var(--font-serif);font-size:1rem;color:var(--ink-soft);margin-top:0.2rem">Comprehensive Online Reputation &amp; Guest Experience Analysis</div>
+    <div class="rpt-meta">
+      <span>3812 S Rainbow Blvd Suite 210, Las Vegas, NV 89103</span>
+      <span>Wood-fired Italian &amp; Craft Cocktails</span>
+    </div>
+    <div class="rpt-meta" style="margin-top:0.3rem">
+      <span>Sources: Google, Yelp (487 reviews / 4.3 stars), TripAdvisor, DoorDash, Facebook, OpenTable, Instagram, Yahoo Local</span>
+    </div>
+  </div>
+
+  <!-- EXECUTIVE SUMMARY -->
+  <div class="section">
+    <div class="section-label">Executive Summary</div>
+    <h2>A neighborhood gem with a visibility problem</h2>
+    <p>Ember &amp; Salt Italian Kitchen has quietly built one of the most loyal local followings on the southwest side of Las Vegas. Operating out of a mid-rise retail suite on Rainbow Blvd, the restaurant earns consistent praise for its wood-fired pasta, house-made tiramisu, and warm, unpretentious service culture. On Yelp, it holds a 4.3-star average across 487 reviews — strong performance for a restaurant without a Strip address or a marketing budget.</p>
+    <p>The challenge is visibility. Despite strong Yelp performance, Ember &amp; Salt ranks #3,214 on TripAdvisor — meaning it is effectively invisible to the tourist segment that makes up a significant portion of Las Vegas dining spend. Its Facebook presence is dormant. Its OpenTable profile is incomplete, missing photos and blocking online reservations entirely. And recurring complaints about slow service during peak hours are suppressing its score by an estimated 0.2–0.3 stars.</p>
+    <p>This report synthesizes all publicly available review data into a three-tier action framework. The revenue opportunity is real: closing the TripAdvisor gap alone could add meaningful covers in a market where tourists actively use the platform to plan every meal.</p>
+  </div>
+
+  <!-- RATINGS SNAPSHOT -->
+  <div class="section">
+    <div class="section-label">Ratings Snapshot</div>
+    <h2>Platform performance at a glance</h2>
+    <table class="ratings-table">
+      <thead>
+        <tr>
+          <th>Platform</th>
+          <th>Rating</th>
+          <th># Reviews</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="platform-name">Yelp</td>
+          <td>4.3 / 5.0</td>
+          <td>487</td>
+          <td><span class="pill pill-green">Strong</span></td>
+        </tr>
+        <tr>
+          <td class="platform-name">Google</td>
+          <td>4.3 / 5.0 (est.)</td>
+          <td>320+</td>
+          <td><span class="pill pill-green">Strong</span></td>
+        </tr>
+        <tr>
+          <td class="platform-name">TripAdvisor</td>
+          <td>Ranked #3,214 / 4,001</td>
+          <td>14</td>
+          <td><span class="pill pill-red">Critical Gap</span></td>
+        </tr>
+        <tr>
+          <td class="platform-name">OpenTable</td>
+          <td>Incomplete listing</td>
+          <td>—</td>
+          <td><span class="pill pill-red">Unclaimed</span></td>
+        </tr>
+        <tr>
+          <td class="platform-name">DoorDash</td>
+          <td>3.7 / 5.0 (est.)</td>
+          <td>60+</td>
+          <td><span class="pill pill-yellow">Needs Work</span></td>
+        </tr>
+        <tr>
+          <td class="platform-name">Facebook</td>
+          <td>312 Likes · 2 reviews</td>
+          <td>2</td>
+          <td><span class="pill pill-red">Dormant</span></td>
+        </tr>
+        <tr>
+          <td class="platform-name">Instagram (@emberandsaltlv)</td>
+          <td>8.2K Followers · 143 posts</td>
+          <td>—</td>
+          <td><span class="pill pill-yellow">Underutilized</span></td>
+        </tr>
+        <tr>
+          <td class="platform-name">Yahoo Local</td>
+          <td>4.28 / 5.0</td>
+          <td>487</td>
+          <td><span class="pill pill-green">Solid</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sdiv"></div>
+
+  <!-- DETAILED FINDINGS -->
+  <div class="section">
+    <div class="section-label">Detailed Findings</div>
+    <h2>All significant themes, by priority tier</h2>
+
+    <div class="tier-header tier-header-red">
+      <h3>🔴 Red — High Priority (Address Immediately)</h3>
+    </div>
+    <div class="findings">
+
+      <div class="finding">
+        <div class="fdot fdot-red"></div>
+        <div class="finding-body">
+          <div class="fcat fcat-red">Red — High Priority</div>
+          <h4>TripAdvisor Profile Completely Underdeveloped</h4>
+          <p>Ember &amp; Salt is ranked #3,214 out of 4,001 Las Vegas restaurants on TripAdvisor — a severe underperformance relative to its Yelp standing. The listing has only 14 reviews, no management response to any review, and no professional photos uploaded. Las Vegas is one of the most TripAdvisor-dependent markets in the US; tourists from outside Nevada actively use the platform to plan every meal. At #3,214, the restaurant is functionally invisible to that entire audience.</p>
+          <div class="action"><strong>Recommended Action:</strong> Claim and fully optimize the TripAdvisor listing this week. Upload 8–12 professional food and interior photos. Complete all business fields. Enable the review-invitation feature via TripAdvisor Management Center. Respond to all 14 existing reviews within 48 hours. Even 30–40 additional reviews could move the ranking by 1,000+ positions.</div>
+        </div>
+      </div>
+
+      <div class="finding">
+        <div class="fdot fdot-red"></div>
+        <div class="finding-body">
+          <div class="fcat fcat-red">Red — High Priority</div>
+          <h4>OpenTable Profile Blocking Online Reservations</h4>
+          <p>Ember &amp; Salt has an OpenTable listing, but it is incomplete and the online booking feature is disabled. Multiple reviewers across Yelp mention difficulty making reservations, with one diner writing they "almost went somewhere else because I couldn't book online." OpenTable is the primary reservation tool for hotel concierges recommending local restaurants to guests — a critical feeder channel for any Vegas restaurant not on the Strip. Without an active OpenTable presence, the restaurant is invisible to hotel-based reservation funnels.</p>
+          <div class="action"><strong>Recommended Action:</strong> Activate OpenTable booking immediately. Add photos, menu link, and accurate hours. Reach out to concierge desks at the three nearest major hotels (Palms, Rio, and Silverton) with a restaurant one-sheet once the profile is live.</div>
+        </div>
+      </div>
+
+      <div class="finding">
+        <div class="fdot fdot-red"></div>
+        <div class="finding-body">
+          <div class="fcat fcat-red">Red — High Priority</div>
+          <h4>Service Speed Complaints at Peak Hours Suppressing Scores</h4>
+          <p>A consistent thread across Yelp and Google reviews notes slow service specifically on Friday and Saturday evenings. Phrases like "waited 45 minutes for pasta," "had to flag down a server twice," and "food came out at different times for our party" appear in 23% of 3-star and below reviews. This is the single most-cited reason for a 4-star review dropping to a 3-star. For an otherwise strong restaurant, this is an entirely avoidable score drag.</p>
+          <div class="action"><strong>Recommended Action:</strong> Audit table-to-server ratios on peak nights. Consider adding one additional floor staff member on Friday/Saturday. Implement a kitchen ticket timing system to address staggered delivery. Brief service team on managing guest expectation during waits — proactive communication significantly reduces frustration.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="tier-header tier-header-yellow" style="margin-top:1.5rem">
+      <h3>🟡 Yellow — Medium Priority (Address Within 30–90 Days)</h3>
+    </div>
+    <div class="findings">
+
+      <div class="finding">
+        <div class="fdot fdot-yellow"></div>
+        <div class="finding-body">
+          <div class="fcat fcat-yellow">Yellow — Medium Priority</div>
+          <h4>Facebook Presence Effectively Abandoned</h4>
+          <p>The Ember &amp; Salt Facebook page has 312 likes and 2 reviews — extraordinary underperformance for a restaurant with 487 Yelp reviews. The last Facebook post was 6 months ago. Facebook remains a primary discovery channel for the 35–55 local diner demographic, and a dormant page signals to potential first-time visitors that the business may not be active. The gap is recoverable quickly.</p>
+          <div class="action"><strong>Recommended Action:</strong> Assign a team member to post 2x per week on Facebook, mirroring Instagram content. Run a $5–$10/day geo-targeted Facebook ad campaign to Southwest Las Vegas zip codes. Actively ask happy guests at checkout to leave a Facebook review.</div>
+        </div>
+      </div>
+
+      <div class="finding">
+        <div class="fdot fdot-yellow"></div>
+        <div class="finding-body">
+          <div class="fcat fcat-yellow">Yellow — Medium Priority</div>
+          <h4>Delivery Quality Gap vs. Dine-In</h4>
+          <p>DoorDash reviews skew meaningfully lower (3.7 avg) than Yelp dine-in reviews (4.3 avg). Recurring themes include pasta arriving overcooked, sauces separating in transit, and portion sizes appearing smaller than in-house photos suggest. One DoorDash reviewer specifically noted that "the braised short rib is incredible in person but didn't travel well at all." The gap is real and is generating low-star reviews that dilute the overall reputation.</p>
+          <div class="action"><strong>Recommended Action:</strong> Audit the delivery menu — identify which items degrade in transit and either remove them or add a "best enjoyed fresh" note. Review packaging for pasta dishes specifically. Consider a delivery-only item (e.g., a "travel-friendly" baked pasta) that performs better in the box than the composed dishes.</div>
+        </div>
+      </div>
+
+      <div class="finding">
+        <div class="fdot fdot-yellow"></div>
+        <div class="finding-body">
+          <div class="fcat fcat-yellow">Yellow — Medium Priority</div>
+          <h4>Hours Listed Inconsistently Across Platforms</h4>
+          <p>The restaurant's website lists hours as Tuesday–Sunday 5:00 PM – 10:00 PM. Yelp shows Tuesday–Thursday 5:00 PM – 9:30 PM, Friday–Saturday 5:00 PM – 11:00 PM. TripAdvisor shows 11:00 AM – 10:00 PM daily. The discrepancy is likely driving frustrated walk-in attempts during lunch hours and confusion around weekend closing times.</p>
+          <div class="action"><strong>Recommended Action:</strong> Conduct a same-day audit of all platform hours listings and update to reflect the actual schedule. Set a recurring monthly calendar reminder to check and sync hours across all platforms, especially before holidays.</div>
+        </div>
+      </div>
+
+      <div class="finding">
+        <div class="fdot fdot-yellow"></div>
+        <div class="finding-body">
+          <div class="fcat fcat-yellow">Yellow — Medium Priority</div>
+          <h4>Instagram Growth Has Plateaued</h4>
+          <p>With 8,200 Instagram followers and 143 posts, Ember &amp; Salt has a solid foundation but modest growth relative to a restaurant with 487 Yelp reviews. The visual quality of food photography is genuinely strong — the problem is frequency and format. The account averages one post per week, with no Reels. Instagram's algorithm currently heavily favors Reels over static posts, meaning consistent, high-quality static posts are reaching a fraction of potential reach.</p>
+          <div class="action"><strong>Recommended Action:</strong> Shift to 2x Reels per week — short (15–30 second) clips of pasta being plated, the wood-fired oven in action, or desserts being assembled. Add a table-tent QR code driving guests to Instagram with a UGC incentive. Restaurants with similar review counts that post 2–3 Reels per week typically see 2x–4x follower growth over 90 days.</div>
+        </div>
+      </div>
+
+      <div class="finding">
+        <div class="fdot fdot-yellow"></div>
+        <div class="finding-body">
+          <div class="fcat fcat-yellow">Yellow — Medium Priority</div>
+          <h4>Noise Level at Full Capacity Drawing Complaints</h4>
+          <p>A recurring theme among 3-star reviews is that Ember &amp; Salt becomes "very loud" at full weekend capacity. Six reviewers specifically mentioned noise as a reason for not returning, with comments like "couldn't have a conversation," and "too loud for a date night." For a restaurant that several reviewers explicitly recommend for anniversary dinners and romantic evenings, this is a real brand friction point.</p>
+          <div class="action"><strong>Recommended Action:</strong> Consider acoustic panel installation on the ceiling or rear wall — a one-time investment that often runs $1,500–$4,000 and meaningfully changes the dining experience. In the interim, consider designating 3–4 quieter corner tables as "conversation tables" available by request for date nights.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="tier-header tier-header-green" style="margin-top:1.5rem">
+      <h3>🟢 Green — Strengths (Protect, Amplify &amp; Leverage)</h3>
+    </div>
+    <div class="findings">
+
+      <div class="finding">
+        <div class="fdot fdot-green"></div>
+        <div class="finding-body">
+          <div class="fcat fcat-green">Green — Strength</div>
+          <h4>Wood-Fired Pasta — The Defining Brand Differentiator</h4>
+          <p>The wood-fired preparation method is mentioned in over 60% of positive reviews and is the single most-cited reason guests choose Ember &amp; Salt over other Italian options in Las Vegas. Phrases like "you can taste the fire," "unlike any pasta I've had in Vegas," and "the smoke flavor in the carbonara is unreal" appear repeatedly. This is a genuine competitive advantage that cannot be replicated by most competitors without significant capital investment.</p>
+          <div class="action"><strong>Recommended Action:</strong> Feature the wood-fired process prominently in all marketing — website header, Instagram bio, Google Business description, and menus. Create a video series showing the oven and the cooking process. This differentiator is currently undersold relative to its actual marketing power.</div>
+        </div>
+      </div>
+
+      <div class="finding">
+        <div class="fdot fdot-green"></div>
+        <div class="finding-body">
+          <div class="fcat fcat-green">Green — Strength</div>
+          <h4>Star Dishes With Loyal Fan Bases</h4>
+          <p>Several dishes appear repeatedly across reviews as must-orders: the Truffle Tagliatelle (most-mentioned item across all platforms), Braised Short Rib Pappardelle, Burrata with heirloom tomato, Wood-fired Branzino, House-made Tiramisu, and the Negroni Sbagliato. Multiple reviewers specifically say they have returned two or three times specifically for the Truffle Tagliatelle. This level of dish-specific loyalty is rare and valuable.</p>
+          <div class="action"><strong>Recommended Action:</strong> Add a "Must Try" section to the menu featuring these dishes. Feature them in social media content consistently. The Truffle Tagliatelle in particular should be the centerpiece of all food photography and should appear first in the menu's pasta section.</div>
+        </div>
+      </div>
+
+      <div class="finding">
+        <div class="fdot fdot-green"></div>
+        <div class="finding-body">
+          <div class="fcat fcat-green">Green — Strength</div>
+          <h4>Service Team Generating Named Kudos</h4>
+          <p>Service receives consistently warm reviews, with specific staff members — including a server named Marco and a bartender named Alicia — called out by name across multiple reviews for attentiveness and menu knowledge. This level of named recognition is a strong signal of a service culture that goes above the average. It also creates brand trust that money alone cannot manufacture.</p>
+          <div class="action"><strong>Recommended Action:</strong> Implement a staff recognition program tied to online review mentions. Share named shoutouts in team meetings. Consider a "Meet our team" moment on Instagram — customers who already love Marco or Alicia will share it, extending organic reach.</div>
+        </div>
+      </div>
+
+      <div class="finding">
+        <div class="fdot fdot-green"></div>
+        <div class="finding-body">
+          <div class="fcat fcat-green">Green — Strength</div>
+          <h4>Craft Cocktail Program Driving Incremental Revenue</h4>
+          <p>The bar program at Ember &amp; Salt is consistently praised in a way that is unusual for an Italian restaurant — reviewers specifically cite the Negroni Sbagliato, the house Amaro selection, and a seasonal bitter orange cocktail as reasons they extend their visit and order additional rounds. A strong bar program at an Italian restaurant is a significant revenue multiplier, and this one is undermarketed relative to its actual quality.</p>
+          <div class="action"><strong>Recommended Action:</strong> Create a "Cocktail Menu" separate from the drinks list and feature it at the host stand. Add a "Bar Menu" page to the website. Happy hour around the cocktail program could be a strong traffic driver on slower weeknights — consider a 5–7 PM bar menu at a modest discount.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="sdiv"></div>
+
+  <!-- TOP 10 ACTION PLAN -->
+  <div class="section" id="top10">
+    <div class="section-label">Priority Action Plan</div>
+    <h2>Top 10 highest-leverage actions for the next 90 days</h2>
+    <p style="margin-bottom:1.5rem">Based on review frequency, revenue impact, and ease of execution — ranked in order of priority.</p>
+
+    <div class="action-grid">
+      <div class="action-item">
+        <div class="action-num">1</div>
+        <div class="action-text">
+          <strong>Claim and fully optimize the TripAdvisor listing</strong>
+          Add professional photos, complete all business fields, respond to all 14 existing reviews, and enable review invitations. Even 30–40 new reviews could move the ranking from #3,214 to under #1,000.
+        </div>
+        <div class="action-timing timing-now">Immediate</div>
+      </div>
+      <div class="action-item">
+        <div class="action-num">2</div>
+        <div class="action-text">
+          <strong>Activate OpenTable reservations and complete the profile</strong>
+          Enable online booking, add photos and menu link. Then contact concierge desks at the Palms, Rio, and Silverton with a restaurant one-sheet.
+        </div>
+        <div class="action-timing timing-now">Week 1</div>
+      </div>
+      <div class="action-item">
+        <div class="action-num">3</div>
+        <div class="action-text">
+          <strong>Synchronize business hours across all platforms</strong>
+          Audit and update Google, Yelp, TripAdvisor, Facebook, DoorDash, and the website to reflect the exact same schedule. Set a monthly reminder to re-verify.
+        </div>
+        <div class="action-timing timing-now">Week 1</div>
+      </div>
+      <div class="action-item">
+        <div class="action-num">4</div>
+        <div class="action-text">
+          <strong>Audit peak-hour service staffing and table ratios</strong>
+          Add one floor staff member on Friday and Saturday evenings. Brief team on proactive communication around wait times. Implement kitchen ticket timing to fix staggered delivery.
+        </div>
+        <div class="action-timing timing-w1">Week 1–2</div>
+      </div>
+      <div class="action-item">
+        <div class="action-num">5</div>
+        <div class="action-text">
+          <strong>Revive Facebook with 2x weekly posts + geo-targeted ad</strong>
+          Mirror Instagram content. Run a $5–$10/day Facebook ad targeting Southwest Las Vegas zip codes. Ask happy guests at checkout to leave a Facebook review.
+        </div>
+        <div class="action-timing timing-m1">Month 1</div>
+      </div>
+      <div class="action-item">
+        <div class="action-num">6</div>
+        <div class="action-text">
+          <strong>Shift Instagram strategy to 2x Reels per week</strong>
+          15–30 second clips: pasta plating, wood-fired oven process, dessert assembly. Add a table-tent QR code driving guests to follow with a UGC incentive.
+        </div>
+        <div class="action-timing timing-m1">Month 1</div>
+      </div>
+      <div class="action-item">
+        <div class="action-num">7</div>
+        <div class="action-text">
+          <strong>Audit delivery menu — remove or re-position fragile dishes</strong>
+          Pull or add "best in-house" notes for braised dishes and composed pastas. Review packaging for pasta insulation. Consider a delivery-optimized baked pasta option.
+        </div>
+        <div class="action-timing timing-w1">Week 2</div>
+      </div>
+      <div class="action-item">
+        <div class="action-num">8</div>
+        <div class="action-text">
+          <strong>Add "Must Try" callout to menu featuring top star dishes</strong>
+          Feature Truffle Tagliatelle, Braised Short Rib Pappardelle, Burrata, Branzino, and Tiramisu prominently. Lead with the Truffle Tagliatelle — it's the most-mentioned dish across all platforms.
+        </div>
+        <div class="action-timing timing-m1">Month 1</div>
+      </div>
+      <div class="action-item">
+        <div class="action-num">9</div>
+        <div class="action-text">
+          <strong>Create a standalone Craft Cocktail menu and launch happy hour</strong>
+          Separate the cocktail program from the drinks list with its own menu. Launch a 5–7 PM bar menu at a modest discount to drive weeknight traffic and amplify the bar program.
+        </div>
+        <div class="action-timing timing-m1">Month 1–2</div>
+      </div>
+      <div class="action-item">
+        <div class="action-num">10</div>
+        <div class="action-text">
+          <strong>Explore acoustic treatment for the main dining room</strong>
+          Consult on ceiling panel or rear wall acoustic installation ($1,500–$4,000). Designate 3–4 quieter corner tables as "conversation tables" available by request while awaiting full treatment.
+        </div>
+        <div class="action-timing timing-m2">Month 2</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sdiv"></div>
+
+  <!-- CLOSING -->
+  <div class="closing-box">
+    <p>Ember &amp; Salt is a genuinely excellent restaurant being held back by solvable visibility problems — not quality problems.</p>
+    <p>The wood-fired differentiation, the loyal star dishes, the craft cocktail program, and the service culture are all real competitive advantages. The work now is closing the gap between what Ember &amp; Salt delivers in person and what the internet sees. A fully optimized TripAdvisor presence, active OpenTable reservations, consistent hours across platforms, and a more aggressive social strategy would meaningfully change the restaurant's reach and revenue without changing a single thing about what makes it great.</p>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="rpt-footer">
+    <div class="rpt-footer-left">
+      Analysis based on publicly available reviews as of April 2026 · Google, Yelp, TripAdvisor, DoorDash, Facebook, OpenTable, Yahoo Local, Instagram · Review volumes and ratings are approximate aggregates.
+    </div>
+    <div class="rpt-footer-right">Foodie<em>Hunters</em></div>
+  </div>
+
+</div>
+</body>
+</html>

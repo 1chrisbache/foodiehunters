@@ -50,23 +50,34 @@ h1 em{font-style:italic;color:var(--sage)}
 .btn-g::after{content:'→';transition:transform 0.2s}
 .btn-g:hover::after{transform:translateX(3px)}
 
-/* HERO CARD */
-.hcard{background:var(--white);border:1px solid var(--rule);border-radius:8px;box-shadow:0 4px 36px rgba(26,24,20,0.07);overflow:hidden}
-.hcard-top{background:var(--ink);padding:1.3rem 1.6rem;display:flex;justify-content:space-between;align-items:flex-start}
-.hcard-name{font-family:var(--font-serif);font-size:1.15rem;font-weight:500;color:var(--ivory);margin-bottom:0.2rem}
-.hcard-loc{font-size:0.7rem;letter-spacing:0.06em;color:rgba(250,248,244,0.38);text-transform:uppercase}
-.hcard-tag{font-size:0.6rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:0.25rem 0.65rem;border-radius:2px;background:rgba(74,103,65,0.3);color:#a8c4a0;border:1px solid rgba(74,103,65,0.4);white-space:nowrap}
-.hcard-rows{padding:1.4rem 1.6rem;display:flex;flex-direction:column;gap:0.9rem;border-bottom:1px solid var(--rule)}
-.prow{display:grid;grid-template-columns:88px 1fr 54px;align-items:center;gap:0.9rem}
-.pname{font-size:0.73rem;font-weight:500;letter-spacing:0.04em;color:var(--ink-soft)}
-.btrack{height:5px;background:var(--rule);border-radius:3px;overflow:hidden}
-.bfill{height:100%;border-radius:3px;width:0;transition:width 1.4s cubic-bezier(0.16,1,0.3,1)}
-.fg{background:var(--sage)}.fm{background:var(--gold)}.fb{background:#c0604a}
-.pscore{font-size:0.76rem;font-weight:500;color:var(--ink-mid);text-align:right}
-.hcard-note{padding:1.15rem 1.6rem;display:flex;gap:0.8rem;align-items:flex-start;background:var(--gold-lt);border-top:1px solid #e8dcc0}
-.note-icon{width:17px;height:17px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;font-size:0.58rem;color:var(--white);font-weight:700}
-.note-txt{font-size:0.8rem;color:var(--ink-mid);line-height:1.55}
-.note-txt strong{font-weight:600;color:var(--ink)}
+/* HERO REPORT CARD */
+.hcard{background:var(--white);border:1px solid var(--rule);border-radius:8px;box-shadow:0 4px 36px rgba(26,24,20,0.09);overflow:hidden;cursor:pointer;transition:box-shadow 0.25s,transform 0.25s;display:block;text-decoration:none}
+.hcard:hover{box-shadow:0 8px 48px rgba(26,24,20,0.14);transform:translateY(-2px)}
+.hcard-top{background:var(--ink);padding:1.1rem 1.4rem;display:flex;justify-content:space-between;align-items:flex-start}
+.hcard-name{font-family:var(--font-serif);font-size:1.05rem;font-weight:500;color:var(--ivory);margin-bottom:0.15rem}
+.hcard-loc{font-size:0.67rem;letter-spacing:0.06em;color:rgba(250,248,244,0.38);text-transform:uppercase}
+.hcard-tag{font-size:0.6rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:0.22rem 0.6rem;border-radius:2px;background:rgba(74,103,65,0.3);color:#a8c4a0;border:1px solid rgba(74,103,65,0.4);white-space:nowrap}
+
+/* THUMBNAIL TOP 10 */
+.hcard-thumb{padding:1.1rem 1.4rem;background:var(--white);border-bottom:1px solid var(--rule)}
+.thumb-title{font-size:0.62rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:0.75rem;display:flex;align-items:center;justify-content:space-between}
+.thumb-title span{color:var(--sage)}
+.thumb-actions{display:flex;flex-direction:column;gap:0.38rem}
+.ta{display:grid;grid-template-columns:22px 1fr 60px;gap:0.6rem;align-items:center;padding:0.38rem 0;border-bottom:1px dotted var(--rule)}
+.ta:last-child{border-bottom:none}
+.ta-num{font-family:var(--font-serif);font-size:1.1rem;font-weight:500;color:var(--ink-faint);line-height:1;text-align:center;font-style:italic}
+.ta-text{font-size:0.72rem;font-weight:400;color:var(--ink-mid);line-height:1.4}
+.ta-badge{font-size:0.56rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;padding:0.15rem 0.4rem;border-radius:2px;text-align:center;white-space:nowrap}
+.tb-now{background:#fdf2ef;color:#c0604a}
+.tb-w1{background:var(--gold-lt);color:#9a6f1a}
+.tb-m1{background:var(--sage-lt);color:var(--sage)}
+.tb-m2{background:#f0eef8;color:#5a4fa0}
+
+.hcard-cta{padding:0.85rem 1.4rem;background:var(--ivory);display:flex;align-items:center;justify-content:space-between;gap:0.75rem}
+.hcard-cta-txt{font-size:0.74rem;font-weight:400;color:var(--ink-soft)}
+.hcard-cta-btn{font-size:0.66rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--sage);display:flex;align-items:center;gap:0.3rem;white-space:nowrap;flex-shrink:0}
+.hcard-cta-btn::after{content:'→';transition:transform 0.2s}
+.hcard:hover .hcard-cta-btn::after{transform:translateX(3px)}
 
 /* STATS BAND */
 .band{border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);background:var(--white)}
@@ -121,25 +132,28 @@ h2 em{font-style:italic;color:var(--sage)}
 .pr-in{max-width:var(--max);margin:0 auto;padding:0 var(--side)}
 .pr-in .eb{color:#a8c4a0}.pr-in .eb::before{background:#a8c4a0}
 .pr-in h2{color:var(--ivory)}.pr-in h2 em{color:#a8c4a0}
-.pr-sub{font-size:0.93rem;font-weight:300;color:rgba(250,248,244,0.42);max-width:460px;line-height:1.75;margin-top:0.7rem;margin-bottom:3rem}
-.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:1.5px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.07);border-radius:6px;overflow:hidden;max-width:740px}
-.plan{background:#1f1d19;padding:2.4rem;display:flex;flex-direction:column;position:relative;transition:background 0.2s}
-.plan:hover{background:#252320}
-.plan.hi{background:#232119}
-.pflag{position:absolute;top:0;left:50%;transform:translateX(-50%);font-size:0.6rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;background:var(--sage);color:var(--white);padding:0.26rem 0.9rem;border-radius:0 0 4px 4px}
-.ptier{font-size:0.66rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(250,248,244,0.28);margin-bottom:1.1rem;margin-top:0.5rem}
-.pprice{font-family:var(--font-serif);font-size:2.8rem;font-weight:500;color:var(--ivory);line-height:1;margin-bottom:0.3rem}
-.pprice span{font-size:1.1rem;font-weight:300;color:rgba(250,248,244,0.45)}
-.pcad{font-size:0.73rem;font-weight:300;color:rgba(250,248,244,0.35);margin-bottom:1.4rem;padding-bottom:1.4rem;border-bottom:1px solid rgba(255,255,255,0.06)}
-.pdesc{font-size:0.84rem;font-weight:300;color:rgba(250,248,244,0.48);line-height:1.65;margin-bottom:1.6rem;flex:1}
-.pfeats{list-style:none;display:flex;flex-direction:column;gap:0.6rem;margin-bottom:1.8rem}
-.pfeats li{font-size:0.81rem;font-weight:300;color:rgba(250,248,244,0.58);display:flex;align-items:flex-start;gap:0.55rem;line-height:1.5}
-.pfeats li::before{content:'✓';color:var(--sage);font-weight:500;flex-shrink:0;font-size:0.76rem;margin-top:1px}
-.pbtn{display:block;width:100%;text-align:center;font-family:var(--font-sans);font-size:0.73rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:0.85rem;border-radius:var(--r);border:none;cursor:pointer;transition:all 0.2s}
-.pbtn-o{background:transparent;border:1px solid rgba(255,255,255,0.13);color:rgba(250,248,244,0.58)}
-.pbtn-o:hover{border-color:rgba(255,255,255,0.36);color:var(--ivory)}
-.pbtn-f{background:var(--sage);color:var(--white)}.pbtn-f:hover{background:#5c8052}
-.pr-note{margin-top:1.8rem;font-size:0.76rem;font-weight:300;color:rgba(250,248,244,0.28)}
+.pr-sub{font-size:0.93rem;font-weight:300;color:rgba(250,248,244,0.42);max-width:500px;line-height:1.75;margin-top:0.7rem;margin-bottom:3rem}
+
+/* SINGLE PLAN */
+.plan-wrap{max-width:620px}
+.plan-single{background:#1f1d19;border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:2.8rem;position:relative;overflow:hidden}
+.plan-single::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(to right,var(--sage),#7ab070)}
+.pflag-s{display:inline-block;font-size:0.6rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;background:var(--sage);color:var(--white);padding:0.26rem 0.9rem;border-radius:2px;margin-bottom:1.5rem}
+.price-row{display:flex;align-items:baseline;gap:0.5rem;margin-bottom:0.25rem;flex-wrap:wrap}
+.price-main{font-family:var(--font-serif);font-size:3.2rem;font-weight:500;color:var(--ivory);line-height:1}
+.price-plus{font-family:var(--font-serif);font-size:1.8rem;font-weight:500;color:#a8c4a0;line-height:1}
+.price-mo{font-size:0.88rem;font-weight:300;color:rgba(250,248,244,0.45)}
+.price-cad{font-size:0.73rem;font-weight:300;color:rgba(250,248,244,0.35);margin-bottom:1.6rem;padding-bottom:1.6rem;border-bottom:1px solid rgba(255,255,255,0.07)}
+.plan-desc{font-size:0.9rem;font-weight:300;color:rgba(250,248,244,0.55);line-height:1.7;margin-bottom:2rem}
+.feats-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.55rem 1.5rem;margin-bottom:2rem}
+.feat{font-size:0.81rem;font-weight:300;color:rgba(250,248,244,0.65);display:flex;align-items:flex-start;gap:0.5rem;line-height:1.5}
+.feat::before{content:'✓';color:var(--sage);font-weight:500;flex-shrink:0;font-size:0.76rem;margin-top:1px}
+.pbtn-s{display:inline-block;font-family:var(--font-sans);font-size:0.76rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--white);background:var(--sage);padding:0.9rem 2.2rem;border-radius:var(--r);border:none;cursor:pointer;transition:background 0.2s}
+.pbtn-s:hover{background:#5c8052}
+.plan-guarantee{margin-top:1.25rem;font-size:0.75rem;font-weight:300;color:rgba(250,248,244,0.28);display:flex;align-items:center;gap:0.5rem}
+.plan-guarantee::before{content:'✦';color:rgba(168,196,160,0.5);font-size:0.65rem}
+
+.pr-note{margin-top:2.5rem;font-size:0.76rem;font-weight:300;color:rgba(250,248,244,0.28)}
 .pr-note a{color:#a8c4a0;text-decoration:underline;text-decoration-color:rgba(168,196,160,0.3)}
 
 /* WHY */
@@ -152,7 +166,6 @@ h2 em{font-style:italic;color:var(--sage)}
 .contact-bg{background:var(--white)}
 .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start}
 .cl h2{margin-bottom:1.1rem}
-.cl .sec-sub{margin-bottom:2.25rem}
 .cmeta{display:flex;flex-direction:column;gap:0.6rem}
 .crow{display:flex;align-items:center;gap:0.7rem;font-size:0.8rem;font-weight:400;color:var(--ink-soft)}
 .cdot{width:5px;height:5px;border-radius:50%;background:var(--sage);flex-shrink:0}
@@ -209,7 +222,7 @@ footer{background:var(--ink);border-top:1px solid rgba(255,255,255,0.05)}
   .how-grid{grid-template-columns:1fr;gap:2.5rem}
   .plat-grid{grid-template-columns:repeat(2,1fr)}
   .pcell:nth-child(2n){border-right:none}
-  .pgrid{grid-template-columns:1fr;max-width:100%}
+  .feats-grid{grid-template-columns:1fr}
   .why-grid{grid-template-columns:1fr 1fr;gap:1.75rem}
   .contact-grid{grid-template-columns:1fr;gap:2.5rem}
   .frow{grid-template-columns:1fr}
@@ -244,26 +257,79 @@ footer{background:var(--ink);border-top:1px solid rgba(255,255,255,0.05)}
         <a href="#how" class="btn-g">How it works</a>
       </div>
     </div>
-    <div class="hcard">
+
+    <!-- SAMPLE REPORT CARD — links to full report -->
+    <a href="report-sample.html" target="_blank" class="hcard">
       <div class="hcard-top">
         <div>
-          <div class="hcard-name">The Nori Handroll Bar</div>
+          <div class="hcard-name">Ember &amp; Salt Italian Kitchen</div>
           <div class="hcard-loc">Las Vegas, NV · Sample Analysis</div>
         </div>
-        <div class="hcard-tag">Sample</div>
+        <div class="hcard-tag">Sample Report</div>
       </div>
-      <div class="hcard-rows">
-        <div class="prow"><span class="pname">Yelp</span><div class="btrack"><div class="bfill fg" data-w="88"></div></div><span class="pscore">4.4 ★</span></div>
-        <div class="prow"><span class="pname">Google</span><div class="btrack"><div class="bfill fg" data-w="85"></div></div><span class="pscore">4.4 ★</span></div>
-        <div class="prow"><span class="pname">TripAdvisor</span><div class="btrack"><div class="bfill fb" data-w="14"></div></div><span class="pscore">#2,906</span></div>
-        <div class="prow"><span class="pname">DoorDash</span><div class="btrack"><div class="bfill fm" data-w="60"></div></div><span class="pscore">3.8 ★</span></div>
-        <div class="prow"><span class="pname">Facebook</span><div class="btrack"><div class="bfill fb" data-w="6"></div></div><span class="pscore">267 likes</span></div>
+      <div class="hcard-thumb">
+        <div class="thumb-title">
+          Top 10 Priority Action Plan
+          <span>Click to open full report →</span>
+        </div>
+        <div class="thumb-actions">
+          <div class="ta">
+            <div class="ta-num">1</div>
+            <div class="ta-text">Claim and fully optimize the TripAdvisor listing — currently ranked #3,214 of 4,001 Las Vegas restaurants</div>
+            <div class="ta-badge tb-now">Immediate</div>
+          </div>
+          <div class="ta">
+            <div class="ta-num">2</div>
+            <div class="ta-text">Activate OpenTable reservations and contact hotel concierge desks for referral traffic</div>
+            <div class="ta-badge tb-now">Week 1</div>
+          </div>
+          <div class="ta">
+            <div class="ta-num">3</div>
+            <div class="ta-text">Synchronize business hours across Google, Yelp, TripAdvisor, Facebook, and DoorDash</div>
+            <div class="ta-badge tb-now">Week 1</div>
+          </div>
+          <div class="ta">
+            <div class="ta-num">4</div>
+            <div class="ta-text">Add a floor staff member on Friday/Saturday and fix staggered dish delivery</div>
+            <div class="ta-badge tb-w1">Week 1–2</div>
+          </div>
+          <div class="ta">
+            <div class="ta-num">5</div>
+            <div class="ta-text">Revive Facebook with 2x weekly posts + geo-targeted $5–$10/day ad in SW Las Vegas</div>
+            <div class="ta-badge tb-m1">Month 1</div>
+          </div>
+          <div class="ta">
+            <div class="ta-num">6</div>
+            <div class="ta-text">Shift Instagram to 2x Reels/week — wood-fired oven process and pasta plating</div>
+            <div class="ta-badge tb-m1">Month 1</div>
+          </div>
+          <div class="ta">
+            <div class="ta-num">7</div>
+            <div class="ta-text">Audit delivery menu — remove fragile dishes or add "best enjoyed fresh" callouts</div>
+            <div class="ta-badge tb-w1">Week 2</div>
+          </div>
+          <div class="ta">
+            <div class="ta-num">8</div>
+            <div class="ta-text">Add "Must Try" section to menu featuring Truffle Tagliatelle, Braised Short Rib, Tiramisu</div>
+            <div class="ta-badge tb-m1">Month 1</div>
+          </div>
+          <div class="ta">
+            <div class="ta-num">9</div>
+            <div class="ta-text">Create a standalone Craft Cocktail menu and launch a 5–7 PM happy hour</div>
+            <div class="ta-badge tb-m1">Month 1–2</div>
+          </div>
+          <div class="ta">
+            <div class="ta-num">10</div>
+            <div class="ta-text">Explore acoustic treatment to address noise complaints at full weekend capacity</div>
+            <div class="ta-badge tb-m2">Month 2</div>
+          </div>
+        </div>
       </div>
-      <div class="hcard-note">
-        <div class="note-icon">!</div>
-        <div class="note-txt"><strong>#2 on Yelp for handroll in Las Vegas</strong> — but ranked #2,906 on TripAdvisor. Every tourist planning dinner tonight can't find you. We identified four high-priority fixes.</div>
+      <div class="hcard-cta">
+        <div class="hcard-cta-txt">See the full report — ratings, all findings, and detailed recommendations</div>
+        <div class="hcard-cta-btn">View Full Report</div>
       </div>
-    </div>
+    </a>
   </div>
 </div>
 
@@ -271,7 +337,7 @@ footer{background:var(--ink);border-top:1px solid rgba(255,255,255,0.05)}
 <div class="band">
   <div class="band-in">
     <div class="bstat"><div class="bnum">8<sup>+</sup></div><div class="blbl">Platforms analyzed</div></div>
-    <div class="bstat"><div class="bnum">600<sup>+</sup></div><div class="blbl">Reviews per report</div></div>
+    <div class="bstat"><div class="bnum">400<sup>+</sup></div><div class="blbl">Reviews per report</div></div>
     <div class="bstat"><div class="bnum">5</div><div class="blbl">Day delivery</div></div>
     <div class="bstat"><div class="bnum">3</div><div class="blbl">Priority tiers — clear actions</div></div>
   </div>
@@ -287,15 +353,15 @@ footer{background:var(--ink);border-top:1px solid rgba(255,255,255,0.05)}
         <div class="step"><div class="sn">01</div><div><h3>We map your entire online presence</h3><p>We gather every public review and rating from Google, Yelp, TripAdvisor, DoorDash, Facebook, Yahoo Local, GrubHub, and Instagram — building a complete picture of how the internet sees your restaurant today.</p></div></div>
         <div class="step"><div class="sn">02</div><div><h3>We find the gaps costing you covers</h3><p>We cross-reference your performance across all platforms, identify where your rankings lag your actual quality, and surface recurring complaint themes that are quietly dragging down your scores.</p></div></div>
         <div class="step"><div class="sn">03</div><div><h3>You receive a prioritized action plan</h3><p>Every finding is classified as Red (address immediately), Yellow (address within 30–90 days), or Green (protect and amplify). Every action is specific, achievable, and tied to a real revenue outcome.</p></div></div>
-        <div class="step"><div class="sn">04</div><div><h3>Track your progress over time</h3><p>Monthly subscribers receive updated reports showing exactly what has moved, what is new, and what still needs attention. Your reputation is a living asset, not a one-time project.</p></div></div>
+        <div class="step"><div class="sn">04</div><div><h3>We keep watching every month</h3><p>Monthly subscribers receive updated reports showing exactly what has moved, what is new, and what still needs attention. Plus unlimited email support on marketing and strategy questions — any time, any topic.</p></div></div>
       </div>
       <div class="rpanel">
-        <div class="rp-hd"><span class="rp-ttl">Sample findings</span><span class="rp-badge">5 priorities identified</span></div>
-        <div class="pitem"><div class="pdot dr"></div><div class="pb"><h4>TripAdvisor listing severely underdeveloped</h4><p>Ranked #2,906 of 4,001 Las Vegas restaurants — invisible to tourists. Immediate fix with significant ranking upside.</p></div></div>
-        <div class="pitem"><div class="pdot dr"></div><div class="pb"><h4>No full liquor or sake license</h4><p>Multiple reviewers note the absence explicitly. A critical brand-experience gap for an izakaya concept.</p></div></div>
-        <div class="pitem"><div class="pdot dy"></div><div class="pb"><h4>Facebook presence almost nonexistent</h4><p>267 likes against 600+ Yelp reviews. Significant discovery gap for the 35–55 local diner demographic.</p></div></div>
-        <div class="pitem"><div class="pdot dy"></div><div class="pb"><h4>Hours inconsistent across platforms</h4><p>Google, TripAdvisor, and Yelp show three different schedules — driving frustrated walk-in visits.</p></div></div>
-        <div class="pitem"><div class="pdot dg"></div><div class="pb"><h4>Sealed nori presentation — core differentiator</h4><p>#2 on Yelp's Top 10 Best Handroll in Las Vegas. Protect, amplify, and make this the centerpiece of all marketing.</p></div></div>
+        <div class="rp-hd"><span class="rp-ttl">Sample findings — Ember &amp; Salt</span><span class="rp-badge">10 priorities identified</span></div>
+        <div class="pitem"><div class="pdot dr"></div><div class="pb"><h4>TripAdvisor listing severely underdeveloped</h4><p>Ranked #3,214 of 4,001 Las Vegas restaurants — invisible to tourists. Immediate fix with significant ranking upside.</p></div></div>
+        <div class="pitem"><div class="pdot dr"></div><div class="pb"><h4>OpenTable blocking online reservations</h4><p>Profile incomplete, booking disabled. Missing hotel concierge referral traffic — a key feeder channel for every Vegas restaurant.</p></div></div>
+        <div class="pitem"><div class="pdot dr"></div><div class="pb"><h4>Peak-hour service speed suppressing star ratings</h4><p>23% of 3-star reviews cite slow service on Friday/Saturday. An entirely avoidable score drag with a straightforward staffing fix.</p></div></div>
+        <div class="pitem"><div class="pdot dy"></div><div class="pb"><h4>Facebook presence dormant for 6 months</h4><p>312 likes against 487 Yelp reviews. Significant discovery gap for the 35–55 local diner demographic.</p></div></div>
+        <div class="pitem"><div class="pdot dg"></div><div class="pb"><h4>Wood-fired pasta — the defining differentiator</h4><p>Mentioned in 60%+ of positive reviews. Currently undersold relative to its marketing power. Protect and amplify everywhere.</p></div></div>
       </div>
     </div>
   </div>
@@ -324,37 +390,31 @@ footer{background:var(--ink);border-top:1px solid rgba(255,255,255,0.05)}
 <div class="pricing-sec" id="pricing">
   <div class="pr-in">
     <div class="eb">Pricing</div>
-    <h2>Clear pricing, <em>measurable return</em></h2>
-    <p class="pr-sub">A restaurant doing $1M per year has roughly $27,000 per day at stake. At $27 a month, ongoing monitoring costs less than a single slow lunch.</p>
-    <div class="pgrid">
-      <div class="plan">
-        <div class="ptier">One-time</div>
-        <div class="pprice">$97</div>
-        <div class="pcad">Single report · Delivered in 5 business days</div>
-        <p class="pdesc">A full reputation analysis across all 8 platforms. The right starting point if you want to see the quality of our work before committing to anything ongoing.</p>
-        <ul class="pfeats">
-          <li>Full 8-platform analysis</li>
-          <li>Red / Yellow / Green priority tiers</li>
-          <li>Specific action per finding</li>
-          <li>Delivered as a formatted PDF</li>
-        </ul>
-        <button class="pbtn pbtn-o" onclick="openModal('One-Time Report','$97')">Get This Report</button>
-      </div>
-      <div class="plan hi">
-        <div class="pflag">Most Popular</div>
-        <div class="ptier">Monthly</div>
-        <div class="pprice">$77 <span>+ $27/mo</span></div>
-        <div class="pcad">One-time setup fee · then $27/month · No contract · Cancel anytime</div>
-        <p class="pdesc">Initial deep-dive report for $77, then just $27 a month for ongoing updates — new review themes, changed priorities, refreshed actions. No contract, cancel whenever you like.</p>
-        <ul class="pfeats">
-          <li>Full initial deep-dive report</li>
-          <li>Monthly update reports</li>
-          <li>New review theme tracking</li>
-          <li>Priority refresh each month</li>
-          <li>Direct email support</li>
-          <li>No contract — cancel anytime</li>
-        </ul>
-        <button class="pbtn pbtn-f" onclick="openModal('Monthly Monitoring','$77 + $27/mo')">Start Monthly Plan</button>
+    <h2>Simple pricing, <em>no surprises</em></h2>
+    <p class="pr-sub">One price gets you everything — your initial deep-dive report, monthly updates, and unlimited email support on marketing and strategy. No contract. Cancel anytime.</p>
+    <div class="plan-wrap">
+      <div class="plan-single">
+        <div class="pflag-s">Everything included</div>
+        <div class="price-row">
+          <div class="price-main">$49</div>
+          <div class="price-plus">+ $9.99<span class="price-mo">/mo</span></div>
+        </div>
+        <div class="price-cad">One-time setup · then $9.99/month · No contract · Cancel anytime</div>
+        <p class="plan-desc">Pay $49 once for your full initial report — a complete analysis of your presence across all 8 platforms. Then $9.99 a month keeps you current: monthly updates, new review themes, refreshed priorities, and unlimited email support on any marketing or strategy question you have.</p>
+        <div class="feats-grid">
+          <div class="feat">Full 8-platform deep-dive report</div>
+          <div class="feat">Monthly update reports</div>
+          <div class="feat">Red / Yellow / Green priority tiers</div>
+          <div class="feat">New review theme tracking</div>
+          <div class="feat">Specific action per finding</div>
+          <div class="feat">Priority refresh each month</div>
+          <div class="feat">Delivered as a formatted PDF</div>
+          <div class="feat">Unlimited marketing &amp; strategy email support</div>
+          <div class="feat">No contract — cancel anytime</div>
+          <div class="feat">Response within 24 hours</div>
+        </div>
+        <button class="pbtn-s" onclick="openModal()">Get Started — $49</button>
+        <div class="plan-guarantee">No long-term commitment. Cancel your monthly subscription at any time.</div>
       </div>
     </div>
     <p class="pr-note">Not ready to commit? <a href="#contact">Request a free mini-report</a> — we'll show you what we find at no cost.</p>
@@ -372,7 +432,7 @@ footer{background:var(--ink);border-top:1px solid rgba(255,255,255,0.05)}
       <div class="wi"><div class="wn">iii.</div><h3>Revenue-first framing</h3><p>Every issue is framed in terms of covers and revenue, not vanity metrics. We write for operators who need to make decisions.</p></div>
       <div class="wi"><div class="wn">iv.</div><h3>The free sample offer</h3><p>We offer a no-strings mini-report before you spend a dollar. See exactly what we do and how we think. If it's not useful, you've lost nothing.</p></div>
       <div class="wi"><div class="wn">v.</div><h3>Eight platforms, one view</h3><p>Most owners check two or three platforms. The biggest gaps reliably live in the others. Our reports cover all eight — including the ones you've forgotten about.</p></div>
-      <div class="wi"><div class="wn">vi.</div><h3>Ongoing, not one-off</h3><p>Your review landscape shifts every month. Monthly subscribers get continuous visibility, not a snapshot that ages out.</p></div>
+      <div class="wi"><div class="wn">vi.</div><h3>Unlimited email support</h3><p>Monthly subscribers can ask us anything about marketing or strategy at any time. No extra charges, no per-question billing. Just practical answers when you need them.</p></div>
     </div>
   </div>
 </div>
@@ -404,8 +464,7 @@ footer{background:var(--ink);border-top:1px solid rgba(255,255,255,0.05)}
             <select id="int">
               <option value="">Select an option...</option>
               <option>Free mini-report — no commitment</option>
-              <option>One-time report — $97</option>
-              <option>Monthly monitoring — $77 + $27/mo</option>
+              <option>Full report — $49 + $9.99/mo</option>
               <option>Just want to learn more</option>
             </select>
           </div>
@@ -440,14 +499,14 @@ footer{background:var(--ink);border-top:1px solid rgba(255,255,255,0.05)}
 <div class="mbg" id="mbg" onclick="closeMO(event)">
   <div class="modal">
     <button class="mx" onclick="closeM()">✕</button>
-    <div class="meb">Reserve your spot</div>
-    <h3>Get your report</h3>
-    <p class="msub">Fill in your details and we'll follow up within 24 hours to get started. Payment is collected before delivery.</p>
+    <div class="meb">Get started</div>
+    <h3>Get your full report</h3>
+    <p class="msub">Fill in your details and we'll follow up within 24 hours to get your report started. Payment is collected before delivery.</p>
     <div class="mplan">
-      <span class="mplan-n" id="mpn">Monthly Monitoring</span>
-      <span class="mplan-p" id="mpp">$77 + $27/mo</span>
+      <span class="mplan-n">Full Report + Monthly Updates</span>
+      <span class="mplan-p">$49 + $9.99/mo</span>
     </div>
-    <form onsubmit="handleModal(event)" style="gap:0.85rem">
+    <form onsubmit="handleModal(event)" style="gap:0.85rem;display:flex;flex-direction:column">
       <div class="fg2"><label>Your name</label><input type="text" placeholder="Full name" required></div>
       <div class="fg2"><label>Restaurant</label><input type="text" placeholder="Restaurant name" required></div>
       <div class="fg2"><label>Email</label><input type="email" placeholder="you@yourrestaurant.com" required></div>
@@ -463,9 +522,7 @@ window.addEventListener('load',()=>{
   },600);
 });
 
-function openModal(n,p){
-  document.getElementById('mpn').textContent=n;
-  document.getElementById('mpp').textContent=p;
+function openModal(){
   document.getElementById('mbg').classList.add('open');
   document.body.style.overflow='hidden';
 }
@@ -475,7 +532,11 @@ function closeM(){
 }
 function closeMO(e){if(e.target===document.getElementById('mbg'))closeM();}
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeM();});
-function handleModal(e){e.preventDefault();closeM();document.getElementById('contact').scrollIntoView({behavior:'smooth'});}
+function handleModal(e){
+  e.preventDefault();
+  closeM();
+  document.getElementById('contact').scrollIntoView({behavior:'smooth'});
+}
 function handleForm(e){
   e.preventDefault();
   document.getElementById('cform').style.display='none';
