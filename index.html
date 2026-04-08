@@ -452,23 +452,23 @@ footer{background:var(--ink);border-top:1px solid rgba(255,255,255,0.05)}
         </div>
       </div>
       <div class="fcard">
-        <form id="cform" onsubmit="handleForm(event)">
+        <form id="cform" action="https://formspree.io/f/xgopqblg" method="POST">
           <div class="frow">
-            <div class="fg2"><label for="fn">First name</label><input type="text" id="fn" placeholder="Alex" required></div>
-            <div class="fg2"><label for="ln">Last name</label><input type="text" id="ln" placeholder="Rivera" required></div>
+            <div class="fg2"><label for="fn">First name</label><input type="text" id="fn" name="first_name" placeholder="Alex" required></div>
+            <div class="fg2"><label for="ln">Last name</label><input type="text" id="ln" name="last_name" placeholder="Rivera" required></div>
           </div>
-          <div class="fg2"><label for="rn">Restaurant name</label><input type="text" id="rn" placeholder="Your restaurant" required></div>
-          <div class="fg2"><label for="em">Email address</label><input type="email" id="em" placeholder="you@yourrestaurant.com" required></div>
+          <div class="fg2"><label for="rn">Restaurant name</label><input type="text" id="rn" name="restaurant_name" placeholder="Your restaurant" required></div>
+          <div class="fg2"><label for="em">Email address</label><input type="email" id="em" name="email" placeholder="you@yourrestaurant.com" required></div>
           <div class="fg2">
             <label for="int">I'm interested in</label>
-            <select id="int">
+            <select id="int" name="interest">
               <option value="">Select an option...</option>
               <option>Free mini-report — no commitment</option>
               <option>Full report — $49 + $9.99/mo</option>
               <option>Just want to learn more</option>
             </select>
           </div>
-          <div class="fg2"><label for="msg">Anything else?</label><textarea id="msg" placeholder="Tell us about your restaurant or your biggest challenges..."></textarea></div>
+          <div class="fg2"><label for="msg">Anything else?</label><textarea id="msg" name="message" placeholder="Tell us about your restaurant..."></textarea></div>
           <button type="submit" class="fsub">Send Message</button>
           <p class="fnote">We respond within 24 hours. No spam, ever.</p>
         </form>
@@ -536,11 +536,6 @@ function handleModal(e){
   e.preventDefault();
   closeM();
   document.getElementById('contact').scrollIntoView({behavior:'smooth'});
-}
-function handleForm(e){
-  e.preventDefault();
-  document.getElementById('cform').style.display='none';
-  document.getElementById('fsuccess').style.display='block';
 }
 </script>
 </body>
